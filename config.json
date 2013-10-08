@@ -1,0 +1,32 @@
+{
+	"name": "puppet",
+	"version": "0.0.1",
+	"dependencies": [{
+		"name": "Facter",
+		"version": "1.7.3",
+		"source": [{
+			"platform": "Darwin",
+			"arch": "64",
+			"uri": "http://downloads.puppetlabs.com/mac/facter-1.7.3.dmg",
+			"provider": "pkgdmg"
+		}]
+	}, {
+		"name": "Hiera",
+		"version": "1.2.1",
+		"source": [{
+			"platform": "Darwin",
+			"arch": "64",
+			"uri": "http://downloads.puppetlabs.com/mac/hiera-1.2.1.dmg",
+			"provider": "pkgdmg"
+		}]
+	}, {
+		"name": "Puppet",
+		"version": "3.3.1",
+		"source": [{
+			"platform": "Darwin",
+			"arch": "64",
+			"uri": "http://downloads.puppetlabs.com/mac/puppet-3.3.1.dmg",
+			"provider": "pkgdmg"
+		}]
+	}]
+}

@@ -1,25 +1,6 @@
-Shell Provisioner to install Puppet
-===================================
+The MIT License (MIT)
 
-The purpose of this script is to install Puppet provisioners on a Vagrant box 
-when puppet isn't available on the base. The setup.sh should also be able to 
-install puppet on the host OS if supported.
-
-This script will do the following:
-
-- Install jq
-- Install Facter, Hiera, and Puppet
-- Create a puppet user and group
-
-Supported Platforms:
-
-- Darwin
-
-
-MIT License
------------
-
-Copyright 2013 Ryan Skoblenick
+Copyright 2013 Ryan Skoblenick <https://github.com/skoblenick>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
