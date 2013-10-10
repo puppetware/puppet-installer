@@ -32,8 +32,8 @@ os_family() {
 }
 
 install_deps() {
-    local config=${1:="./config.json"}
-    
+    local config=${1}
+
     install_jq
 
     if [ ! -f "${config}" ]; then
@@ -41,17 +41,18 @@ install_deps() {
         exit 1
     fi
 
-    # Parse the config
-    deps=$( cat "${config}" | jq -r '.dependencies[].source[].uri' )
-    packages=( $deps )
-
     if [ $( os_family ) == "Darwin" ]; then
+
+        packages=($(cat "${config}" | jq -r -c '.dependencies[].source[] | select(.platform == "Darwin").uri'))
+
         for package in "${packages[@]}"
         do
+            # Extract the filename from the URL
             filename=$( basename ${package} )
 
             # Download
-            curl --create-dirs -o "/tmp/${filename}" ${package}
+            curl -L -o "/tmp/${filename}" ${package}
+
 
             # Mount disk image
             hdiutil attach -nobrowse -readonly -noidme "/tmp/${filename}" -mountpoint "/Volumes/${filename}"
@@ -94,7 +95,7 @@ install_jq() {
         fi
         sudo curl -L -o '/usr/bin/jq' "http://stedolan.github.io/jq/download/${os}/jq"
         sudo chmod a+x '/usr/bin/jq'
-        echo 'Command Line JSON parser already install.'
+        echo 'Command Line JSON parser installed...'
     else
         echo 'Command Line JSON parser already installed... skipping...'
     fi
