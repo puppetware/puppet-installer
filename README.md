@@ -7,7 +7,6 @@ install puppet on the host OS if supported.
 
 This script will do the following:
 
-- Install jq
 - Install Facter, Hiera, and Puppet
 - Create a puppet user and group
 
