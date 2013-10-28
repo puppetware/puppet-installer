@@ -85,6 +85,62 @@ function main () {
                 sudo defaults write /Library/Preferences/com.apple.loginwindow HiddenUsersList -array-add puppet
             fi
         ;;
+        Linux)
+            puppet_version="3.3.1"
+
+            mkdir -p /tmp
+
+            # Identify the distro that I care about
+            case $( lsb_release -si ) in
+               
+                Debian|Ubuntu)
+                    # Debian bases
+                    # ============
+                    codename=$( lsb_release -sc )
+
+                    # Ensure curl is installed
+                    apt-get install -y curl
+                    
+                    # Add Puppets release repo if it doesn't exist
+                    dpkg -l puppetlabs-release > /dev/null
+                    if [ $? -ne 0 ]; then
+                        echo "here"
+                        curl --create-dirs -o "/tmp/puppetlabs-release-${codename}.deb" "http://apt.puppetlabs.com/puppetlabs-release-${codename}.deb"
+                        sudo dpkg -i "/tmp/puppetlabs-release-${codename}.deb"
+                        apt-get update
+                    fi
+
+                    # Find out the available versions in the repo
+                    #apt-cache showpkg <package name>
+
+                    # Install Puppet
+                    apt-get install -y puppet=${puppet_version}-1puppetlabs1
+
+                    # Clean up
+                    rm -rf "/tmp/puppetlabs-release-${codename}.deb"
+                    ;;
+
+                RedHat|CentOS)
+                    # RHEL6 bases
+                    # ===========
+
+                    # Ensure curl is installed
+                    yum install -y curl
+
+                    # Add Puppets PGP Key
+                    rpm --import "http://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs"
+
+                    # Add Puppets release repo
+                    rpm -ivh "http://yum.puppetlabs.com/el/6/products/i386/puppetlabs-release-6-7.noarch.rpm"
+
+                    # Find out the available versions in the repo
+                    #yum --showduplicates list <package name>
+
+                    # Install Puppet
+                    yum install -y puppet-${puppet_version}-1.el6
+                    ;;
+            esac
+        ;;
         *)
             echo "Unsupported operating system."
             exit 9
